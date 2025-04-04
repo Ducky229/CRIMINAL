@@ -1,0 +1,84 @@
+[gd_scene load_steps=18 format=3 uid="uid://bgx2fb713y6uj"]
+
+[ext_resource type="Texture2D" uid="uid://cqpgqd2tr3qru" path="res://Character.png" id="1_3vyb7"]
+[ext_resource type="Script" uid="uid://dapevl3hcjsp7" path="res://scripts/player.gd" id="1_g2els"]
+[ext_resource type="Script" uid="uid://bs8ykimprimlx" path="res://resources/weapons.gd" id="3_a8ls1"]
+[ext_resource type="Resource" uid="uid://bfhrillbpsirj" path="res://resources/pistol.tres" id="3_oprun"]
+[ext_resource type="Script" uid="uid://kg1wcuhs3a0p" path="res://scripts/state_machine/state_machine.gd" id="3_qlg0r"]
+[ext_resource type="Script" uid="uid://d0gn15w5tmvg7" path="res://scripts/walking_state.gd" id="4_tuyoq"]
+[ext_resource type="PackedScene" uid="uid://b1msw1qlqdw6t" path="res://scenes/weapon.tscn" id="5_a8ls1"]
+[ext_resource type="Script" uid="uid://6auu1kyl7fyw" path="res://scenes/idle_state.gd" id="5_qlg0r"]
+[ext_resource type="Script" uid="uid://jltp4ks1mhac" path="res://scenes/riding_state.gd" id="6_tuyoq"]
+[ext_resource type="PackedScene" uid="uid://buiiuqp6benp5" path="res://scenes/basic_movement_processor.tscn" id="7_fjrip"]
+[ext_resource type="PackedScene" uid="uid://dfjwqexu14cf4" path="res://scenes/health_component.tscn" id="8_smehm"]
+[ext_resource type="Script" uid="uid://ngm1wk0w57vb" path="res://scenes/hp_bar_player.gd" id="9_3v2ag"]
+[ext_resource type="Texture2D" uid="uid://tgmiyepthgad" path="res://resources/hpunder.png" id="10_jej6c"]
+[ext_resource type="Texture2D" uid="uid://8nr8cx8noosx" path="res://resources/hpover.png" id="11_f1ej7"]
+[ext_resource type="Texture2D" uid="uid://bu86hf7dkpwvb" path="res://resources/hpvalue.png" id="12_oprun"]
+[ext_resource type="PackedScene" uid="uid://bk6hfn7g3s8qp" path="res://scenes/follow_player.tscn" id="13_jej6c"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_u8vuu"]
+radius = 23.2615
+height = 70.7854
+
+[node name="Player" type="CharacterBody2D"]
+scale = Vector2(1.00353, 0.988759)
+motion_mode = 1
+script = ExtResource("1_g2els")
+WEAPONS = Array[ExtResource("3_a8ls1")]([ExtResource("3_oprun")])
+
+[node name="BasicMovementProcessor" parent="." instance=ExtResource("7_fjrip")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(15.495, 0)
+rotation = 1.5708
+scale = Vector2(1, 1.04173)
+shape = SubResource("CapsuleShape2D_u8vuu")
+
+[node name="Weapon" parent="." instance=ExtResource("5_a8ls1")]
+position = Vector2(77.7256, 8.09095)
+
+[node name="Character" type="Sprite2D" parent="."]
+position = Vector2(29.8944, 2.02274)
+scale = Vector2(0.131779, 0.131779)
+texture = ExtResource("1_3vyb7")
+
+[node name="MovementStateMachine" type="Node" parent="." node_paths=PackedStringArray("CURRENT_STATE")]
+script = ExtResource("3_qlg0r")
+CURRENT_STATE = NodePath("IdleState")
+
+[node name="WalkingState" type="Node" parent="MovementStateMachine"]
+script = ExtResource("4_tuyoq")
+
+[node name="IdleState" type="Node" parent="MovementStateMachine"]
+script = ExtResource("5_qlg0r")
+
+[node name="RidingState" type="Node" parent="MovementStateMachine"]
+script = ExtResource("6_tuyoq")
+
+[node name="InteractRay" type="RayCast2D" parent="."]
+target_position = Vector2(100.46, 0)
+
+[node name="ShootingComponent" type="Node2D" parent="."]
+
+[node name="HealthComponent" parent="." instance=ExtResource("8_smehm")]
+
+[node name="HPBar" type="Node2D" parent="HealthComponent"]
+z_index = 1
+scale = Vector2(4.535, 4.535)
+script = ExtResource("9_3v2ag")
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="HealthComponent/HPBar"]
+offset_left = -77.398
+offset_top = 52.0397
+offset_right = 72.602
+offset_bottom = 82.0397
+scale = Vector2(0.605, 0.4)
+value = 100.0
+texture_under = ExtResource("10_jej6c")
+texture_over = ExtResource("11_f1ej7")
+texture_progress = ExtResource("12_oprun")
+
+[node name="FollowPlayer" parent="HealthComponent/HPBar" node_paths=PackedStringArray("FOLLOW", "OWNER") instance=ExtResource("13_jej6c")]
+FOLLOW = NodePath("../../..")
+OWNER = NodePath("..")

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://buiiuqp6benp5"]
+
+[ext_resource type="Script" uid="uid://cseefgxus5sp3" path="res://scenes/basic_movement_processor.gd" id="1_2et8t"]
+
+[node name="BasicMovementProcessor" type="Node2D"]
+script = ExtResource("1_2et8t")

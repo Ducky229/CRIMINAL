@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="Cars" load_steps=4 format=3 uid="uid://c32pug8hdc8vo"]
+
+[ext_resource type="Texture2D" uid="uid://q3xmm17kmb66" path="res://CAR.png" id="1_2e7cj"]
+[ext_resource type="Script" uid="uid://dovcgmjt6uefs" path="res://resources/cars.gd" id="1_pexor"]
+[ext_resource type="OccluderPolygon2D" uid="uid://lslgmqeq8egj" path="res://resources/default_car_occluder_polygon.tres" id="1_ryp0g"]
+
+[resource]
+script = ExtResource("1_pexor")
+NAME = &""
+SPRITE = ExtResource("1_2e7cj")
+COLOR = Color(0.575668, 0.742485, 0, 1)
+OCCLUDER_POLYGON = ExtResource("1_ryp0g")
+WHEEL_BASE = 70.0
+STEERING_ANGLE = 15
+ENGINE_POWER = 900
+FRICTION = -55
+DRAG = -0.06
+BRAKING = -450
+MAX_SPEED_REVERSE = 250
+SLIP_SPEED = 400
+TRACTION_FAST = 2.5
+TRACTION_SLOW = 10.0
+metadata/_custom_type_script = "uid://dovcgmjt6uefs"

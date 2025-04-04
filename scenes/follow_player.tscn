@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bk6hfn7g3s8qp"]
+
+[ext_resource type="Script" uid="uid://b42t208260y2u" path="res://scenes/follow_player.gd" id="1_h1hml"]
+
+[node name="FollowOwner" type="Node2D"]
+script = ExtResource("1_h1hml")

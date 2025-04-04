@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://1m1bwfe0f6t8"]
+
+[ext_resource type="Script" uid="uid://dmpe4njd0s1su" path="res://scenes/car.gd" id="1_50v30"]
+[ext_resource type="Texture2D" uid="uid://q3xmm17kmb66" path="res://CAR.png" id="3_3mrxu"]
+[ext_resource type="OccluderPolygon2D" uid="uid://lslgmqeq8egj" path="res://resources/default_car_occluder_polygon.tres" id="3_50v30"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yqjtg"]
+size = Vector2(148, 71)
+
+[node name="Car" type="CharacterBody2D"]
+motion_mode = 1
+wall_min_slide_angle = 0.872665
+script = ExtResource("1_50v30")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_yqjtg")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+position = Vector2(0.250008, 2.375)
+scale = Vector2(0.498333, 0.439655)
+texture = ExtResource("3_3mrxu")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+position = Vector2(-75, -34)
+occluder = ExtResource("3_50v30")

@@ -1,0 +1,78 @@
+[gd_scene load_steps=16 format=3 uid="uid://bypuivwnoad7m"]
+
+[ext_resource type="Script" uid="uid://uc1tmeqlicc7" path="res://scenes/enemy.gd" id="1_w8i8w"]
+[ext_resource type="Resource" uid="uid://bfhrillbpsirj" path="res://resources/pistol.tres" id="2_j0cyh"]
+[ext_resource type="PackedScene" uid="uid://buiiuqp6benp5" path="res://scenes/basic_movement_processor.tscn" id="2_otmr2"]
+[ext_resource type="Texture2D" uid="uid://cqpgqd2tr3qru" path="res://Character.png" id="3_wtq4b"]
+[ext_resource type="Script" uid="uid://kg1wcuhs3a0p" path="res://scripts/state_machine/state_machine.gd" id="4_j0cyh"]
+[ext_resource type="Script" uid="uid://dj4hgdfpjr5p2" path="res://scenes/enemy_states/enemy_idle_state.gd" id="5_g0wcc"]
+[ext_resource type="Script" uid="uid://rj6rpr8iksxj" path="res://scenes/EnemyGoingForPlayer.gd" id="6_s1ycm"]
+[ext_resource type="PackedScene" uid="uid://dfjwqexu14cf4" path="res://scenes/health_component.tscn" id="7_shcg2"]
+[ext_resource type="Script" uid="uid://bydg6pyrba153" path="res://scenes/hp_bar.gd" id="8_ile5s"]
+[ext_resource type="Texture2D" uid="uid://tgmiyepthgad" path="res://resources/hpunder.png" id="9_1x4g4"]
+[ext_resource type="Texture2D" uid="uid://8nr8cx8noosx" path="res://resources/hpover.png" id="10_2pwtc"]
+[ext_resource type="Texture2D" uid="uid://bu86hf7dkpwvb" path="res://resources/hpvalue.png" id="11_rogs8"]
+[ext_resource type="PackedScene" uid="uid://bk6hfn7g3s8qp" path="res://scenes/follow_player.tscn" id="12_otmr2"]
+[ext_resource type="PackedScene" uid="uid://b1msw1qlqdw6t" path="res://scenes/weapon.tscn" id="13_wtq4b"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vtaks"]
+radius = 23.2615
+height = 70.7854
+
+[node name="Enemy" type="CharacterBody2D"]
+script = ExtResource("1_w8i8w")
+USED_WEAPON = ExtResource("2_j0cyh")
+
+[node name="BasicMovementProcessor" parent="." instance=ExtResource("2_otmr2")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(15.495, 0)
+rotation = 1.5708
+scale = Vector2(1, 1.04173)
+shape = SubResource("CapsuleShape2D_vtaks")
+
+[node name="Character" type="Sprite2D" parent="."]
+modulate = Color(1, 0, 0, 1)
+position = Vector2(29.8944, 2.02274)
+scale = Vector2(0.131779, 0.131779)
+texture = ExtResource("3_wtq4b")
+
+[node name="EnemyStateMachine" type="Node" parent="." node_paths=PackedStringArray("CURRENT_STATE")]
+script = ExtResource("4_j0cyh")
+CURRENT_STATE = NodePath("EnemyIdleState")
+
+[node name="EnemyIdleState" type="Node" parent="EnemyStateMachine"]
+script = ExtResource("5_g0wcc")
+
+[node name="EnemyGoingForPlayer" type="Node" parent="EnemyStateMachine"]
+script = ExtResource("6_s1ycm")
+
+[node name="HealthComponent" parent="." instance=ExtResource("7_shcg2")]
+
+[node name="HPBar" type="Node2D" parent="HealthComponent"]
+script = ExtResource("8_ile5s")
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="HealthComponent/HPBar"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -46.0
+offset_top = -43.0
+offset_right = 104.0
+offset_bottom = -13.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.605, 0.4)
+value = 100.0
+texture_under = ExtResource("9_1x4g4")
+texture_over = ExtResource("10_2pwtc")
+texture_progress = ExtResource("11_rogs8")
+
+[node name="FollowOwner" parent="HealthComponent/HPBar" node_paths=PackedStringArray("FOLLOW", "OWNER") instance=ExtResource("12_otmr2")]
+FOLLOW = NodePath("../../..")
+OWNER = NodePath("..")
+
+[node name="Weapon" parent="." instance=ExtResource("13_wtq4b")]
+position = Vector2(77, 8)
+
+[connection signal="health_changed" from="HealthComponent" to="HealthComponent/HPBar" method="update_bar"]

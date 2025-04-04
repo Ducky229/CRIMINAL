@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1msw1qlqdw6t"]
+
+[ext_resource type="Script" uid="uid://durjy55okbimy" path="res://scenes/weapon_controller.gd" id="1_xasec"]
+
+[node name="Weapon" type="Node2D"]
+script = ExtResource("1_xasec")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+unique_name_in_owner = true
